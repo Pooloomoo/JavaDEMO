@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserExist(String email){
+    public boolean isEmailExist(String email){
         return userRepository.findByEmail(email).isEmpty();
     }
 }

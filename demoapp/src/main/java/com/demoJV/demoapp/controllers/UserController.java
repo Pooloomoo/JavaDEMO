@@ -57,10 +57,11 @@ public class UserController {
 
     @PostMapping("/user/register")
     public ResponseEntity<String> register(@RequestBody Users users){
-        if(userService.isUserExist(users.email)){
+        if(!userService.isEmailExist(users.email)){
             return new ResponseEntity<>("Sorry user has been take",HttpStatus.BAD_REQUEST);
         }
         Users regisUser = new Users();
+        regisUser.name = users.name;
         regisUser.email = users.email;
         regisUser.password = passwordEncoder.encode(users.password);
         regisUser.role = "USER";
