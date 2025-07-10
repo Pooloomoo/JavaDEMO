@@ -3,6 +3,7 @@ package com.demoJV.demoapp.services.Impl;
 import com.demoJV.demoapp.models.Users;
 import com.demoJV.demoapp.repositories.UserRepository;
 import com.demoJV.demoapp.services.UserService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,5 +50,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(int id){
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isUserExist(String email){
+        return userRepository.findByEmail(email).isEmpty();
     }
 }

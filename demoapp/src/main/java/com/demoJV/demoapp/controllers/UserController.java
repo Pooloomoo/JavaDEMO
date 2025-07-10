@@ -2,6 +2,11 @@ package com.demoJV.demoapp.controllers;
 
 import com.demoJV.demoapp.models.Users;
 import com.demoJV.demoapp.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +16,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -42,5 +53,18 @@ public class UserController {
     public String deleteUser(@PathVariable("id") int id){
         userService.deleteUser(id);
         return "Delete Success";
+    }
+
+    @PostMapping("/user/register")
+    public ResponseEntity<String> register(@RequestBody Users users){
+        if(userService.isUserExist(users.email)){
+            return new ResponseEntity<>("Sorry user has been take",HttpStatus.BAD_REQUEST);
+        }
+        Users regisUser = new Users();
+        regisUser.email = users.email;
+        regisUser.password = passwordEncoder.encode(users.password);
+        regisUser.role = "USER";
+        userService.saveUser(regisUser);
+        return new ResponseEntity<>("Register Complete",HttpStatus.OK);
     }
 }
