@@ -1,11 +1,16 @@
 package com.demoJV.demoapp.controllers;
 
 import com.demoJV.demoapp.models.Users;
+import com.demoJV.demoapp.models.auth.AuthDTO;
+import com.demoJV.demoapp.security.JwtGenerateToken;
 import com.demoJV.demoapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +27,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtGenerateToken jwtGenerateToken;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -68,4 +76,24 @@ public class UserController {
         userService.saveUser(regisUser);
         return new ResponseEntity<>("Register Complete",HttpStatus.OK);
     }
+
+//    @PostMapping("/user/login")
+//    public ResponseEntity<String> login(@RequestBody Users users){
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                users.email,
+//                users.password));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        return new ResponseEntity<>("Login Success!!",HttpStatus.OK);
+//    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<AuthDTO> login(@RequestBody Users users){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                users.email,
+                users.password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerateToken.generateToken(authentication);
+        return new ResponseEntity<>(new AuthDTO(token),HttpStatus.OK);
+    }
+
 }
