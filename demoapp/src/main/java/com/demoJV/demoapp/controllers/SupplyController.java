@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/supply")
 public class SupplyController {
 
     private final SupplyService supplyService;
@@ -16,27 +16,27 @@ public class SupplyController {
         this.supplyService = supplyService;
     }
 
-    @GetMapping("/supply")
+    @GetMapping("/")
     public List<Supplies> getAllSupply(){
         return supplyService.getAllSupply();
     }
 
-    @GetMapping("/supply/{id}")
+    @GetMapping("/{id}")
     public Supplies getSupply(@PathVariable("id") int id){
         return supplyService.getSupply(id);
     }
 
-    @PostMapping("/supply")
+    @PostMapping("/")
     public Supplies saveSupply(@RequestBody Supplies supplies){
         return supplyService.saveSupply(supplies);
     }
 
-    @PutMapping("/supply/{id}")
+    @PutMapping("/{id}")
     public Supplies editSupply(@PathVariable("id") int id,@RequestBody Supplies supplies){
         return supplyService.editSupply(id,supplies);
     }
 
-    @DeleteMapping("/supply/{id}")
+    @DeleteMapping("/{id}")
     public String deleteSupply(@PathVariable("id") int id){
         supplyService.deleteSupply(id);
         return "Your Supply has been delete.";

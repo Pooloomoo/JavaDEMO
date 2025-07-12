@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -35,35 +35,35 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/")
     public List<Users> getAllUser(){
         System.out.println("get User");
         return userService.getAllUser();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public Users getUser(@PathVariable("id") int id){
         return userService.getUser(id);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/")
     public Users saveUser(@RequestBody Users user){
         return userService.saveUser(user);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/{id}")
     public Users editUser(@PathVariable("id") int id,@RequestBody Users user){
         return  userService.editUser(id,user);
 
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") int id){
         userService.deleteUser(id);
         return "Delete Success";
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Users users){
         if(!userService.isEmailExist(users.email)){
             return new ResponseEntity<>("Sorry user has been take",HttpStatus.BAD_REQUEST);
@@ -86,7 +86,7 @@ public class UserController {
 //        return new ResponseEntity<>("Login Success!!",HttpStatus.OK);
 //    }
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthDTO> login(@RequestBody Users users){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 users.email,

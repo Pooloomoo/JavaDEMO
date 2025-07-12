@@ -8,33 +8,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/inventory")
 public class InventoryController {
 
     @Autowired
     private InventoryService inventoryService;
 
-    @GetMapping("/inventory")
+    @GetMapping("/")
     public List<Inventories> getAllInventory(){
         return inventoryService.getAllInventory();
     }
 
-    @GetMapping("/inventory/{id}")
+    @GetMapping("/{id}")
     public Inventories getInventory(@PathVariable("id") int id){
         return inventoryService.getInventory(id);
     }
 
-    @PostMapping("/inventory")
+    @PostMapping("/")
     public Inventories saveInventory(@RequestBody Inventories inventories){
         return inventoryService.saveInventory(inventories);
     }
 
-    @PutMapping("/inventory/{id}")
+    @PutMapping("/{id}")
     public Inventories editInventory(@PathVariable("id") int id,@RequestBody Inventories inventories){
         return inventoryService.editInventory(id,inventories);
     }
 
-    @DeleteMapping("/inventory/{id}")
+    @DeleteMapping("/{id}")
     public String deleteInventory(@PathVariable("id") int id){
         inventoryService.deleteInventory(id);
         return "Your Inventory has been delete";

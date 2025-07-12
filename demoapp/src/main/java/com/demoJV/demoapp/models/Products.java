@@ -24,12 +24,12 @@ public class Products {
 
     @ManyToOne
     @JoinColumn(name = "cataloges",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference("catalog-product")
     public Cataloges catalog;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplies",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference("supply-product")
     public Supplies supply;
 
     @OneToOne(mappedBy = "product")

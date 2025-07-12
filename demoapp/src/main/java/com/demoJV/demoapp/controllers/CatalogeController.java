@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cataloge")
 public class CatalogeController {
 
     private final CatalogeService catalogeService;
@@ -16,27 +16,27 @@ public class CatalogeController {
         this.catalogeService = catalogeService;
     }
 
-    @GetMapping("/cataloge")
+    @GetMapping("/")
     public List<Cataloges> getAllCataloge(){
         return catalogeService.getAllCataloge();
     }
 
-    @GetMapping("/cataloge/{id}")
+    @GetMapping("/{id}")
     public Cataloges getCataloge(@PathVariable("id") int id){
         return catalogeService.getCataloge(id);
     }
 
-    @PostMapping("/cataloge")
+    @PostMapping("/")
     public Cataloges saveCataloge(@RequestBody Cataloges cataloge){
         return catalogeService.saveCataloge(cataloge);
     }
 
-    @PutMapping("/cataloge/{id}")
+    @PutMapping("/{id}")
     public Cataloges editCataloge(@PathVariable("id") int id,@RequestBody Cataloges cataloge){
         return catalogeService.editCataloge(id,cataloge);
     }
 
-    @DeleteMapping("/cataloge/{id}")
+    @DeleteMapping("/{id}")
     public String deleteCataloge(@PathVariable("id") int id){
         catalogeService.deleteCataloge(id);
         return "Your Cataloge has been delete";

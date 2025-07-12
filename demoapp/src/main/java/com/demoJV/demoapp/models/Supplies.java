@@ -34,6 +34,6 @@ public class Supplies {
     public String email;
 
     @OneToMany(mappedBy = "supply", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("supply-product")
     public List<Products> product;
 }
