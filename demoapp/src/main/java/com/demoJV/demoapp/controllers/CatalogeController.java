@@ -2,6 +2,8 @@ package com.demoJV.demoapp.controllers;
 
 import com.demoJV.demoapp.models.Cataloges;
 import com.demoJV.demoapp.services.CatalogeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,8 @@ public class CatalogeController {
     }
 
     @GetMapping("/{id}")
-    public Cataloges getCataloge(@PathVariable("id") int id){
-        return catalogeService.getCataloge(id);
+    public ResponseEntity<Cataloges> getCataloge(@PathVariable("id") int id){
+        return new ResponseEntity<>(catalogeService.getCataloge(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
