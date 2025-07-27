@@ -34,6 +34,12 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+//    @Autowired
+//    private JwtAuthFilter jwtAuthFilter;
+
+    @Autowired
+    private JwtGenerateToken jwtGenerateToken;
+
     @Bean
     public SecurityFilterChain securityChain(HttpSecurity http) throws Exception{
         http
@@ -42,7 +48,8 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/register", "/api/user/login","/api/**").permitAll()
+                        .requestMatchers("/api/user/register", "/api/user/login").permitAll()
+                                .requestMatchers("/error").permitAll()
 //                        .requestMatchers("/api/**").permitAll()
 //                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -79,6 +86,6 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthFilter jwtAuthFilter(){
-        return new JwtAuthFilter();
+        return new JwtAuthFilter(jwtGenerateToken, customUserDetailService);
     }
 }

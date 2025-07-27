@@ -1,9 +1,11 @@
 package com.demoJV.demoapp.controllers;
 
+import com.demoJV.demoapp.exception.UserNotFoundException;
 import com.demoJV.demoapp.models.Users;
 import com.demoJV.demoapp.models.auth.AuthDTO;
 import com.demoJV.demoapp.security.JwtGenerateToken;
 import com.demoJV.demoapp.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,11 +47,15 @@ public class UserController {
 
     @GetMapping("/{id}")
     public Users getUser(@PathVariable("id") int id){
-        return userService.getUser(id);
+        Users user = userService.getUser(id);
+        if(user == null){
+            throw new UserNotFoundException("id:"+id);
+        }
+        return user;
     }
 
     @PostMapping("/")
-    public Users saveUser(@RequestBody Users user){
+    public Users saveUser(@Valid @RequestBody Users user){
         return userService.saveUser(user);
     }
 
